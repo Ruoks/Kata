@@ -25,7 +25,6 @@ public class CheckoutTests
         var checkout = new Checkout();
 
         var result = checkout.Scan(item);
-
         Assert.False(result);
 
     }
