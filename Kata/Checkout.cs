@@ -11,27 +11,47 @@ namespace Kata
         {
             private readonly IEnumerable<IItem> products;
             private readonly IEnumerable<ISpecialOffer> discounts;
-            private string[] scannedProducts;
             private List<IItem> basket;
 
             public Checkout(IEnumerable<IItem> products, IEnumerable<ISpecialOffer> discounts)
             {
                 this.products = products;
                 this.discounts = discounts;
-                scannedProducts = new string[] { };
                 basket = new List<IItem>();
             }
 
             public decimal Total()
             {
                 decimal total = 0;
+                decimal totalDiscount = 0;
 
                 foreach (Item item in basket)
                 {
                     total += PriceFor(item);
                 }
 
-                return total;
+                foreach (ISpecialOffer discount in discounts)
+                {
+                    totalDiscount += CalculateDiscount(discount, basket);
+                }
+
+                return total - totalDiscount;
+            }
+
+            private decimal CalculateDiscount(ISpecialOffer discount, List<IItem> cart)
+            {
+                int itemCount = cart.Count(item => item.SKU == discount.SKU);
+
+                decimal itemPrice = products.Single(item => item.SKU == discount.SKU).Price;
+
+                int numberOfDiscountCanBeApplied = (int)(itemCount / discount.Quantity);
+
+                if (numberOfDiscountCanBeApplied == 0)
+                {
+                    return 0;
+                }
+                return numberOfDiscountCanBeApplied * ((itemPrice * discount.Quantity) - discount.Value);
+
             }
 
             private decimal PriceFor(Item item)
