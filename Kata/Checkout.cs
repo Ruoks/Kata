@@ -24,7 +24,19 @@ namespace Kata
 
             public decimal Total()
             {
-                return 0m;
+                decimal total = 0;
+
+                foreach (Item item in basket)
+                {
+                    total += PriceFor(item);
+                }
+
+                return total;
+            }
+
+            private decimal PriceFor(Item item)
+            {
+                return products.Single(i => i.SKU == item.SKU).Price;
             }
 
             public bool Scan(Item item)
