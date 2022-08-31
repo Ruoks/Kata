@@ -35,6 +35,10 @@ namespace Kata
                     totalDiscount += CalculateDiscount(discount, basket);
                 }
 
+                Console.WriteLine("Price before Discount: " + total + "£");
+                Console.WriteLine("Discount Applied: " + totalDiscount + "£");
+                Console.WriteLine("Price After Discount: " + (total - totalDiscount) + "£");
+
                 return total - totalDiscount;
             }
 

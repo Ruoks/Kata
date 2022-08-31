@@ -37,6 +37,10 @@ namespace Kata
             {
                 bool successfullyScanned = checkOut.Scan(item);
 
+                if (!successfullyScanned)
+                {
+                    throw new Exception("Item " + item.SKU + " can't be found in products");
+                }
             }
 
             var price = checkOut.Total();
